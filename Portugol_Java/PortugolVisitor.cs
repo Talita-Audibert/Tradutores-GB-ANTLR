@@ -35,12 +35,35 @@ namespace Portugol_Java
 		{
 			string nomeClasse = context.ID().GetText();
 			classFile.Append($"public class {nomeClasse}{{ {Environment.NewLine}{Identacao.Metodo} public static void main(String[] args){{ {Environment.NewLine} ");
+
+			//sempre instancia uma variavel de IO mesmo se não é usado.
+			//Se for instanciado no visitor das funções é sempre criado uma instancia nova
+			classFile.Append($"{ Identacao.CorpoMetodo}Scanner entrada = new Scanner(System.in);{Environment.NewLine}");
+
 			return base.VisitPrograma(context);
 		}
 
 		public override int VisitDecFuncoes([NotNull] PortugolParser.DecFuncoesContext context)
 		{
-			string a = context.GetText();
+			string metodos = context.ID().ToString();
+
+			switch (metodos)
+			{
+				case "escreval":
+					classFile.Append($"{Identacao.CorpoMetodo}System.out.println();{Environment.NewLine}");
+					break;
+
+				case "escreva":
+					string texto = context.listaPar().STRING(0).ToString();
+					classFile.Append($"{Identacao.CorpoMetodo}System.out.println({texto});{Environment.NewLine}");
+					break;
+
+				case "leia":
+					string nomeVar = context.listaPar().ID(0).ToString();
+					classFile.Append($"{Identacao.CorpoMetodo}{nomeVar} = entrada.next();{Environment.NewLine}");
+					break;
+			}
+			
 			return base.VisitDecFuncoes(context);
 		}
 
