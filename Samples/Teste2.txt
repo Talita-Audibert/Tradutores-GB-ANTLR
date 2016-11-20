@@ -1,25 +1,13 @@
-var n1, n2, saida: real oper: caractere   
-inicio escreval // pulo de linha 
-escreva("Insira o primeiro num: ") 
+ALGORITMO Teste2;
+var n1, n2, saida: REAL oper: CARACTERE   
+INICIO 
+escreval
+escreva("Insira o primeiro num") 
 leia(n1) 
-escreva("Operação: ") 
+escreva("Operacao") 
 leia(oper) 
-escreva("Insira o segundo num : ") 
+escreva("Insira o segundo num") 
 leia(n2) 
-escreval // pulo de linha   
-escolha (oper)  
-caso "+"  
-saida <- n1 + n2          
-caso "-"  saida <- n1 - n2          
-caso "*"  saida <- n1 * n2          
-caso "/"  
-se n2=0 
-entao // verifica divisão por zero 
- escreva("Erro! Divisão por zero, entre com um denominador diferente de 0")  
-senao  
-saida <- n1 / n2
-fimse   
-fimescolha   
-escreva("Resultado da operação:", saida) 
-escreval   
-fimalgoritmo
+escreval  
+   
+FIM.

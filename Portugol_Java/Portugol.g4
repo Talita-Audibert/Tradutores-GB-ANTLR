@@ -9,39 +9,52 @@ compileUnit
 	;
 
 programa
-	: 'ALGORITMO' ID ';' decVars* 'INICIO' decVars* decFuncoes* 'FIM' '.'
+	: 'ALGORITMO' ID ';' decVars* 'INICIO' (decVars|decFuncoes)* 'FIM' '.'
 	;
 	
-decVars : ('var'|'VAR')? listaVar	
+decVars 
+	: ('var'|'VAR')? listaVar	
 	;
-listaVar:	ID (',' ID)* ';'
-	|	ID (',' ID)* ':' tipo ';'
+listaVar
+	: ID (',' ID)* ':' tipo
 	;
 
 decFuncoes 
-	: ID '('listaPar')' decVars* statement*
-	| ID
-		;
+	: ID (statement)*
+	| ID '('listaPar')' (decVars|statement)*
+	;
 
 statement
-	: 'SE' expression statement* decFuncoes* ('ENTAO' expression statement* decFuncoes*)?  ('SENAO' statement)?
-	| 'ESCOLHA''('ID')'  ('CASO' (ID|INT))+  statement 'FIMESCOLHA'
+	: decFuncoes
+	| decVars
+	| operacao
+	| 'SE' expression statement* decFuncoes* ('ENTAO' expression statement* decFuncoes*)?  ('SENAO' statement)? 'FIMSE'
+	| 'ESCOLHA' '('valor')'  ('CASO' valor)+  statement 'FIMESCOLHA'
 	;
 
-tipo	:	'INTEIRO' |'STRING'|'BOOLEANO'|'REAL'|'LOGICO'
+tipo	
+	: 'INTEIRO' |'STRING'|'BOOLEANO'|'REAL'|'LOGICO'|'CARACTERE'
 	;
 
-listaPar: STRING|ID
+listaPar
+	: STRING|ID
 	| (',' STRING|ID)*
 	;
 
-expression: ID ('='|'!='|'>'|'<') (ID|INT|expression)
+expression
+	: ID ('='|'!='|'>'|'<'|'<-') (ID|INT|expression)
 	;
 
-valor	:    INT
-	|    STRING
-	|    'VERDADEIRO'
-	|    'FALSO'
+operacao
+	: (ID|INT) (SIMBOLOS) (ID|INT)
+	;
+
+valor
+	: INT
+	| STRING
+	| 'VERDADEIRO'
+	| 'FALSO'
+	| ID
 	; 
 	
 ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
@@ -63,6 +76,7 @@ WS  :   ( ' '
 
 STRING
     :  '"' ( ESC_SEQ | ~('\\'|'"') )* '"'
+	| '"' (ID|INT|SIMBOLOS|' '|'\t'|'\r'|'\n')+ '"'
     ;
 
 fragment
