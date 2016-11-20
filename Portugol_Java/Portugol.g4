@@ -25,7 +25,6 @@ decFuncoes
 
 statement: 'SE' statement 'ENTAO' statement ('SENAO' statement)?
 	| 'ESCOLHA''('ID')'  ('CASO' (ID|INT))+  statement 'FIMESCOLHA'
-	|
 	;
 
 tipo	:	'INTEIRO' |'STRING'|'BOOLEANO'|'REAL'|'LOGICO'
