@@ -1,0 +1,4 @@
+ALGORITMO OlaMundo;
+INICIO
+escreva("Ola, Mundo!") 
+FIM
