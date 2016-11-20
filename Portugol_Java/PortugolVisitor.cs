@@ -1,9 +1,16 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
+using System;
+using System.IO;
 using System.Text;
 
 namespace Portugol_Java
 {
+	public static class Identacao
+	{
+		public const string Metodo = "\t";
+		public const string CorpoMetodo = "\t\t";
+	}
 	public class PortugolVisitor : PortugolBaseVisitor<int>
 	{
 		StringBuilder classFile;
@@ -13,10 +20,21 @@ namespace Portugol_Java
 			classFile = new StringBuilder();
 		}
 
+		public void SaveToFile(string filePath)
+		{
+			if (classFile != null)
+			{
+				using (var file = new StreamWriter(filePath, false))
+				{
+					file.Write(classFile.ToString());
+				}
+			}
+		}
+
 		public override int VisitPrograma([NotNull] PortugolParser.ProgramaContext context)
 		{
-			string a = context.ID().GetText();
-			classFile.AppendFormat("public class {0}{{ \n\tpublic static void main(String[] args){{\n ", a);
+			string nomeClasse = context.ID().GetText();
+			classFile.Append($"public class {nomeClasse}{{ {Environment.NewLine}{Identacao.Metodo} public static void main(String[] args){{ {Environment.NewLine} ");
 			return base.VisitPrograma(context);
 		}
 
@@ -36,7 +54,10 @@ namespace Portugol_Java
 		{
 			string tipo = context.tipo().GetText();
 			string variavel = context.ID(0).ToString();
-			switch (tipo) {
+			classFile.Append($"{Identacao.CorpoMetodo}");
+
+			switch (tipo)
+			{
 				case "REAL":
 					classFile.AppendFormat("double {0}", variavel);
 					break;
@@ -58,14 +79,15 @@ namespace Portugol_Java
 			}
 
 			int r = context.ID().Length;
-			for(int i = 1; i<r; i++)
+
+			for (int i = 1; i < r; i++)
 			{
 				variavel = context.ID(i).ToString();
 				classFile.AppendFormat(", {0}", variavel);
 			}
 
 			classFile.Append(";\n");
-						
+
 			return base.VisitListaVar(context);
 		}
 

@@ -23,6 +23,7 @@ namespace PortugolJavaConsole
 			Console.WriteLine(tree.ToStringTree(parser));
 			PortugolVisitor visitor = new PortugolVisitor();
 			visitor.Visit(tree);
+			visitor.SaveToFile(@"..\..\..\Samples\Resultado.txt");
 			//Console.WriteLine(visitor.Visit(tree));
 
 			Console.Read();
