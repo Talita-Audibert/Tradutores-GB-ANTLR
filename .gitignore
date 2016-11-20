@@ -3,3 +3,8 @@
 ################################################################################
 
 /packages
+/PortugolJavaConsole/bin/Debug
+/PortugolJavaConsole/obj/Debug
+/Portugol_Java/bin/Debug
+/Portugol_Java/obj/Debug
+/.vs/Portugol_Java/v14
