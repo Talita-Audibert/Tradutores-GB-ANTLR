@@ -23,7 +23,8 @@ decFuncoes
 	| ID
 		;
 
-statement: 'SE' statement 'ENTAO' statement ('SENAO' statement)?
+statement
+	: 'SE' expression statement* decFuncoes* ('ENTAO' expression statement* decFuncoes*)?  ('SENAO' statement)?
 	| 'ESCOLHA''('ID')'  ('CASO' (ID|INT))+  statement 'FIMESCOLHA'
 	;
 
@@ -34,6 +35,8 @@ listaPar: STRING|ID
 	| (',' STRING|ID)*
 	;
 
+expression: ID ('='|'!='|'>'|'<') (ID|INT|expression)
+	;
 
 valor	:    INT
 	|    STRING

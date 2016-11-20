@@ -14,7 +14,7 @@ namespace PortugolJavaConsole
 	{
 		static void Main(string[] args)
 		{
-			StreamReader inputStream = new StreamReader(@"C:\Users\talia_000\Desktop\Trabalho_tradutores\Portugol_Java\Samples\Teste1.txt");
+			StreamReader inputStream = new StreamReader(@"..\..\..\Samples\Teste1.txt");
 			AntlrInputStream input = new AntlrInputStream(inputStream.ReadToEnd());
 			PortugolLexer lexer = new PortugolLexer(input);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
