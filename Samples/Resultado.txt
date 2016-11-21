@@ -11,3 +11,19 @@ public class Teste2{
 		System.out.println("Insira o segundo num");
 		n2 = entrada.next();
 		System.out.println();
+		switch(oper){
+		case"+":
+		saida=n1+n2
+		break;
+		case"-":
+		saida=n1-n2
+		break;
+		case"*":
+		saida=n1*n2
+		break;
+		case"/":
+		if(){
+		break;
+		System.out.println("Erro! Divisao por zero, entre com um denominador diferente de 0");
+		System.out.println("Resultado da operação:");
+		System.out.println();

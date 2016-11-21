@@ -67,12 +67,6 @@ namespace Portugol_Java
 			return base.VisitDecFuncoes(context);
 		}
 
-		public override int VisitDecVars([NotNull] PortugolParser.DecVarsContext context)
-		{
-			string a = context.GetText();
-			return base.VisitDecVars(context);
-		}
-
 		public override int VisitListaVar([NotNull] PortugolParser.ListaVarContext context)
 		{
 			string tipo = context.tipo().GetText();
@@ -114,41 +108,44 @@ namespace Portugol_Java
 			return base.VisitListaVar(context);
 		}
 
-		public override int VisitStatement([NotNull] PortugolParser.StatementContext context)
+		//In progress...
+		public override int VisitBlocos([NotNull] PortugolParser.BlocosContext context)
 		{
-			string a = context.GetText();
-			return base.VisitStatement(context);
+			string blocos = context.GetText();
+			int tst = context.ChildCount;
+
+			if (blocos.Contains("ESCOLHA"))
+			{
+				string varSwitch = context.@switch().valor(0).GetText();
+				classFile.Append($"{Identacao.CorpoMetodo}switch({varSwitch}){{{Environment.NewLine}");
+
+				string caso;
+				string sttm;
+				for (int i = 1; i < context.@switch().valor().Length; i++)
+				{
+					caso = context.@switch().valor(i).GetText();
+					classFile.Append($"{Identacao.CorpoMetodo}case{caso}:{Environment.NewLine}");
+
+					sttm = context.@switch().statement(i - 1).GetText();
+					if (sttm.Contains("SE"))
+					{
+						classFile.Append($"{Identacao.CorpoMetodo}if(){{{Environment.NewLine}");
+					}
+					else
+					{
+						classFile.Append($"{Identacao.CorpoMetodo}{sttm}{Environment.NewLine}");
+					}
+					classFile.Append($"{Identacao.CorpoMetodo}break;{Environment.NewLine}");
+				}
+
+				
+			}
+
+			
+
+			return base.VisitBlocos(context);
 		}
 
-		public override int VisitTipo([NotNull] PortugolParser.TipoContext context)
-		{
-			string a = context.GetText();
-			return base.VisitTipo(context);
-		}
-
-		public override int VisitListaPar([NotNull] PortugolParser.ListaParContext context)
-		{
-			string a = context.GetText();
-			return base.VisitListaPar(context);
-		}
-
-		public override int VisitExpression([NotNull] PortugolParser.ExpressionContext context)
-		{
-			string a = context.GetText();
-			return base.VisitExpression(context);
-		}
-
-		public override int VisitOperacao([NotNull] PortugolParser.OperacaoContext context)
-		{
-			string a = context.GetText();
-			return base.VisitOperacao(context);
-		}
-
-		public override int VisitValor([NotNull] PortugolParser.ValorContext context)
-		{
-			string a = context.GetText();
-			return base.VisitValor(context);
-		}
 
 	}
 }

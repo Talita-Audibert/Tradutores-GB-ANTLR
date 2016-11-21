@@ -9,5 +9,18 @@ leia(oper)
 escreva("Insira o segundo num") 
 leia(n2) 
 escreval  
-   
+ESCOLHA (oper)  
+CASO "+"  
+saida = n1 + n2          
+CASO "-"  saida = n1 - n2          
+CASO "*"  saida = n1 * n2          
+CASO "/"  
+SE n2=0 
+ENTAO escreva("Erro! Divisao por zero, entre com um denominador diferente de 0")  
+SENAO  
+saida = n1 / n2
+FIMSE   
+FIMESCOLHA   
+escreva("Resultado da operação:", saida) 
+escreval
 FIM.

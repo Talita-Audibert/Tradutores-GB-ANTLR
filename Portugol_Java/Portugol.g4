@@ -9,7 +9,7 @@ compileUnit
 	;
 
 programa
-	: 'ALGORITMO' ID ';' decVars* 'INICIO' (decVars|decFuncoes)* 'FIM' '.'
+	: 'ALGORITMO' ID ';' decVars* 'INICIO' (decVars|decFuncoes|statement)*  'FIM' '.'
 	;
 	
 decVars 
@@ -20,16 +20,28 @@ listaVar
 	;
 
 decFuncoes 
-	: ID (statement)*
-	| ID '('listaPar')' (decVars|statement)*
+	: ID
+	| ID '('listaPar')'
 	;
 
 statement
-	: decFuncoes
-	| decVars
+	: blocos
+	| expression
 	| operacao
-	| 'SE' expression statement* decFuncoes* ('ENTAO' expression statement* decFuncoes*)?  ('SENAO' statement)? 'FIMSE'
-	| 'ESCOLHA' '('valor')'  ('CASO' valor)+  statement 'FIMESCOLHA'
+	| decFuncoes
+	;
+
+blocos
+	: if
+	| switch
+	;
+
+if
+	: 'SE' expression ('ENTAO' (statement)+)+  ('SENAO' (statement)+)? 'FIMSE'
+	;
+
+switch
+	: 'ESCOLHA' '('valor')'  ('CASO' valor statement)+ 'FIMESCOLHA'
 	;
 
 tipo	
@@ -37,12 +49,11 @@ tipo
 	;
 
 listaPar
-	: STRING|ID
-	| (',' STRING|ID)*
+	: ((',')? (STRING|ID))+
 	;
 
 expression
-	: ID ('='|'!='|'>'|'<'|'<-') (ID|INT|expression)
+	: valor ('='|'!='|'>'|'<'|'<-') (valor|operacao)+
 	;
 
 operacao
