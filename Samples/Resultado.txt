@@ -13,16 +13,20 @@ public class Teste2{
 		System.out.println();
 		switch(oper){
 		case"+":
-		saida=n1+n2
+			saida=n1+n2;
 		break;
 		case"-":
-		saida=n1-n2
+			saida=n1-n2;
 		break;
 		case"*":
-		saida=n1*n2
+		if(n2=0){
+			escreva("Erro! Divisao por zero, entre com um denominador diferente de 0");
+			}
+		else{saida=n1/n2;
+}
 		break;
 		case"/":
-		if(){
+			saida=n1*n2;
 		break;
 		System.out.println("Erro! Divisao por zero, entre com um denominador diferente de 0");
 		System.out.println("Resultado da operação:");

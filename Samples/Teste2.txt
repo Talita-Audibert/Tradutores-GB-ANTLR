@@ -13,14 +13,16 @@ ESCOLHA (oper)
 CASO "+"  
 saida = n1 + n2          
 CASO "-"  saida = n1 - n2          
-CASO "*"  saida = n1 * n2          
-CASO "/"  
+CASO "*"  
 SE n2=0 
 ENTAO escreva("Erro! Divisao por zero, entre com um denominador diferente de 0")  
 SENAO  
 saida = n1 / n2
-FIMSE   
+FIMSE            
+CASO "/"  
+saida = n1 * n2
 FIMESCOLHA   
+SE a=b ENTAO teste FIMSE
 escreva("Resultado da operação:", saida) 
 escreval
 FIM.

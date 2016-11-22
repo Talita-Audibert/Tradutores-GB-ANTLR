@@ -37,7 +37,10 @@ blocos
 	;
 
 if
-	: 'SE' expression ('ENTAO' (statement)+)+  ('SENAO' (statement)+)? 'FIMSE'
+	: 'SE' expression ('ENTAO' (statement)+)+  else 'FIMSE'
+	;
+else
+	: ('SENAO' (statement)+)?
 	;
 
 switch
