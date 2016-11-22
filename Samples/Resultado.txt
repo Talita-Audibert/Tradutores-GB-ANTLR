@@ -28,6 +28,15 @@ public class Teste2{
 		case"/":
 			saida=n1*n2;
 		break;
+		if(n2=0){
+			escreva("Erro! Divisao por zero, entre com um denominador diferente de 0");
+		}
+		else{
+			saida=n1/n2;
+		}
 		System.out.println("Erro! Divisao por zero, entre com um denominador diferente de 0");
+		if(a=b){
+			teste;
+		}
 		System.out.println("Resultado da operação:");
 		System.out.println();
