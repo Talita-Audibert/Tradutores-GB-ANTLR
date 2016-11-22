@@ -25,15 +25,13 @@ namespace Portugol_Java
 
 		public string ChavesFinais(int contador)
 		{
-			var auxiliar = "";
+            string auxiliar = "";
+            for (int i = 0; i < contador; i++)
+            {
+                auxiliar += "}";
+            }
 
-			for (int i = 0; i < contador; i++)
-			{
-				auxiliar += Environment.NewLine + "}";
-			}
-
-			return auxiliar;
-
+            return auxiliar;	
 		}
 
 		public void SaveToFile(string filePath)
@@ -42,7 +40,7 @@ namespace Portugol_Java
 			{
 				using (var file = new StreamWriter(filePath, false))
 				{
-					file.Write(classFile.ToString());
+					file.Write(classFile.ToString() + ChavesFinais(contadorLinhas));
 				}
 			}
 		}
@@ -131,8 +129,8 @@ namespace Portugol_Java
 			{
 				string varSwitch = context.@switch().valor(0).GetText();
 				classFile.Append($"{Identacao.CorpoMetodo}switch({varSwitch}){{{Environment.NewLine}");
-
-				string caso;
+                contadorLinhas++;
+                string caso;
 				string sttm;
 				for (int i = 1; i < context.@switch().valor().Length; i++)
 				{
@@ -191,6 +189,7 @@ namespace Portugol_Java
 					classFile.Append($"{Identacao.CorpoMetodo}else{{{Environment.NewLine}{Identacao.CorpoIf}{elseStatement};{Environment.NewLine}{Identacao.CorpoMetodo}}}{Environment.NewLine}");
 				}
 			}
+     
 			return base.VisitBlocos(context);
 		}
 	}
