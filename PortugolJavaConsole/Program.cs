@@ -14,16 +14,21 @@ namespace PortugolJavaConsole
 	{
 		static void Main(string[] args)
 		{
-			StreamReader inputStream = new StreamReader(@"..\..\..\Samples\Teste2.txt");
+            Console.Write("Digite o nome do arquivo: ");
+            string arquivo = Console.ReadLine();
+            string entrada = String.Format(@"..\..\..\Samples\{0}.txt", arquivo);
+            string saida = String.Format(@"..\..\..\Samples\Results\{0}.java", arquivo);
+            StreamReader inputStream = new StreamReader(entrada);
 			AntlrInputStream input = new AntlrInputStream(inputStream.ReadToEnd());
 			PortugolLexer lexer = new PortugolLexer(input);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
 			PortugolParser parser = new PortugolParser(tokens);
 			IParseTree tree = parser.programa();
-			Console.WriteLine(tree.ToStringTree(parser));
+			//Console.WriteLine(tree.ToStringTree(parser));
 			PortugolVisitor visitor = new PortugolVisitor();
 			visitor.Visit(tree);
-			visitor.SaveToFile(@"..\..\..\Samples\Resultado.txt");
+            Console.Write($"Arquivo gerado: {arquivo}.java");
+			visitor.SaveToFile(saida);
 			//Console.WriteLine(visitor.Visit(tree));
 
 			Console.Read();
