@@ -13,25 +13,14 @@ namespace Portugol_Java
 		public const string CorpoMetodo = "\t\t";
 		public const string CorpoIf = "\t\t\t";
 	}
-	public class PortugolVisitor : PortugolBaseVisitor<int>
-	{
-		StringBuilder classFile;
-		int contadorLinhas = 0;
+    public class PortugolVisitor : PortugolBaseVisitor<int>
+    {
+        StringBuilder classFile;
+        string chavesFinais = "\t\t entrada.close(); \n \t } \n }";
 
 		public PortugolVisitor()
 		{
 			classFile = new StringBuilder();
-		}
-
-		public string ChavesFinais(int contador)
-		{
-			string auxiliar = "";
-			for (int i = 0; i < contador; i++)
-			{
-				auxiliar += "}";
-			}
-
-			return auxiliar;
 		}
 
 		public void SaveToFile(string filePath)
@@ -40,7 +29,7 @@ namespace Portugol_Java
 			{
 				using (var file = new StreamWriter(filePath, false))
 				{
-					file.Write(classFile.ToString() + ChavesFinais(contadorLinhas));
+					file.Write(classFile.ToString() + chavesFinais);
 				}
 			}
 		}
@@ -53,7 +42,6 @@ namespace Portugol_Java
 			//sempre instancia uma variavel de IO mesmo se não é usado.
 			//Se for instanciado no visitor das funções é sempre criado uma instancia nova
 			classFile.Append($"{ Identacao.CorpoMetodo}Scanner entrada = new Scanner(System.in);{Environment.NewLine}");
-			contadorLinhas += 1;
 			return base.VisitPrograma(context);
 		}
 
@@ -69,8 +57,9 @@ namespace Portugol_Java
 					case "escreval":
 						if (true)
 						{
-							classFile.Append($"{Identacao.CorpoMetodo}System.out.println();{Environment.NewLine}");
-						}
+                            string nomeSaida = context.listaPar().ID(0).ToString();
+                            classFile.Append($"{Identacao.CorpoMetodo}System.out.println({nomeSaida});{Environment.NewLine}");
+                        }
 						break;
 
 					case "escreva":
@@ -80,7 +69,7 @@ namespace Portugol_Java
 
 					case "leia":
 						string nomeVar = context.listaPar().ID(0).ToString();
-						classFile.Append($"{Identacao.CorpoMetodo}{nomeVar} = entrada.next();{Environment.NewLine}");
+                        classFile.Append($"{Identacao.CorpoMetodo}{nomeVar} = entrada.next();{Environment.NewLine}");
 						break;
 				}
 			}
@@ -103,13 +92,13 @@ namespace Portugol_Java
 					classFile.AppendFormat("int {0}", variavel);
 					break;
 				case "BOOLEANO":
-					classFile.AppendFormat("bool {0}", variavel);
+					classFile.AppendFormat("boolean {0}", variavel);
 					break;
 				case "LOGICO":
-					classFile.AppendFormat("bool {0}", variavel);
+					classFile.AppendFormat("boolean {0}", variavel);
 					break;
 				case "STRING":
-					classFile.AppendFormat("string {0}", variavel);
+					classFile.AppendFormat("String {0}", variavel);
 					break;
 				case "CARACTERE":
 					classFile.AppendFormat("char {0}", variavel);
@@ -136,7 +125,6 @@ namespace Portugol_Java
 			{
 				string varSwitch = context.@switch().valor(0).GetText();
 				classFile.Append($"{Identacao.CorpoMetodo}switch({varSwitch}){{{Environment.NewLine}");
-				contadorLinhas++;
 				string caso;
 				string sttm;
 				for (int i = 1; i < context.@switch().valor().Length; i++)
