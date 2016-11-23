@@ -13,10 +13,10 @@ namespace Portugol_Java
 		public const string CorpoMetodo = "\t\t";
 		public const string CorpoIf = "\t\t\t";
 	}
-    public class PortugolVisitor : PortugolBaseVisitor<int>
-    {
-        StringBuilder classFile;
-        string chavesFinais = "\t\t entrada.close(); \n \t } \n }";
+	public class PortugolVisitor : PortugolBaseVisitor<int>
+	{
+		StringBuilder classFile;
+		string chavesFinais = "\t\tentrada.close(); \n \t } \n }";
 
 		public PortugolVisitor()
 		{
@@ -57,9 +57,13 @@ namespace Portugol_Java
 					case "escreval":
 						if (true)
 						{
-                            string nomeSaida = context.listaPar().ID(0).ToString();
-                            classFile.Append($"{Identacao.CorpoMetodo}System.out.println({nomeSaida});{Environment.NewLine}");
-                        }
+							string nomeSaida = "";
+							if (context.listaPar() != null)
+							{
+								nomeSaida = context.listaPar().ID(0).ToString();
+							}
+							classFile.Append($"{Identacao.CorpoMetodo}System.out.println({nomeSaida});{Environment.NewLine}");
+						}
 						break;
 
 					case "escreva":
@@ -69,7 +73,7 @@ namespace Portugol_Java
 
 					case "leia":
 						string nomeVar = context.listaPar().ID(0).ToString();
-                        classFile.Append($"{Identacao.CorpoMetodo}{nomeVar} = entrada.next();{Environment.NewLine}");
+						classFile.Append($"{Identacao.CorpoMetodo}{nomeVar} = entrada.next();{Environment.NewLine}");
 						break;
 				}
 			}
@@ -146,10 +150,7 @@ namespace Portugol_Java
 							switch (statement)
 							{
 								case "escreval":
-									if (true)
-									{
-										classFile.Append($"{Identacao.CorpoIf}System.out.println();{Environment.NewLine}");
-									}
+									classFile.Append($"{Identacao.CorpoIf}System.out.println();{Environment.NewLine}");
 									break;
 
 								case "escreva":
@@ -166,7 +167,7 @@ namespace Portugol_Java
 									classFile.Append($"{Identacao.CorpoIf}{statement};{Environment.NewLine}");
 									break;
 							}
-							
+
 						}
 						classFile.Append($"{Identacao.CorpoIf}}}{Environment.NewLine}");
 

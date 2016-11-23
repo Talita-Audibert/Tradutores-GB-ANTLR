@@ -35,4 +35,6 @@ public class Teste2{
 		}
 		System.out.println("Resultado da operação:");
 		System.out.println();
-}}
+		entrada.close(); 
+ 	 } 
+ }
