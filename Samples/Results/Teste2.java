@@ -29,9 +29,10 @@ public class Teste2{
 		case"/":
 			saida=n1*n2;
 		break;
+		}
 		if(a=b){
 			teste;
 		}
 		System.out.println("Resultado da operação:");
 		System.out.println();
-}}}
+}}

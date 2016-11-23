@@ -53,7 +53,7 @@ namespace Portugol_Java
 			//sempre instancia uma variavel de IO mesmo se não é usado.
 			//Se for instanciado no visitor das funções é sempre criado uma instancia nova
 			classFile.Append($"{ Identacao.CorpoMetodo}Scanner entrada = new Scanner(System.in);{Environment.NewLine}");
-			contadorLinhas += 2;
+			contadorLinhas += 1;
 			return base.VisitPrograma(context);
 		}
 
@@ -196,6 +196,7 @@ namespace Portugol_Java
 					}
 					classFile.Append($"{Identacao.CorpoMetodo}break;{Environment.NewLine}");
 				}
+				classFile.Append($"{Identacao.CorpoMetodo}}}{Environment.NewLine}");
 			}
 
 			else if (bloco.StartsWith("SE") && (context.parent.parent.IsEmpty))
