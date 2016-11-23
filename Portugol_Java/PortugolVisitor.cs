@@ -25,13 +25,13 @@ namespace Portugol_Java
 
 		public string ChavesFinais(int contador)
 		{
-            string auxiliar = "";
-            for (int i = 0; i < contador; i++)
-            {
-                auxiliar += "}";
-            }
+			string auxiliar = "";
+			for (int i = 0; i < contador; i++)
+			{
+				auxiliar += "}";
+			}
 
-            return auxiliar;	
+			return auxiliar;
 		}
 
 		public void SaveToFile(string filePath)
@@ -60,22 +60,29 @@ namespace Portugol_Java
 		public override int VisitDecFuncoes([NotNull] PortugolParser.DecFuncoesContext context)
 		{
 			string metodos = context.ID().ToString();
+			var metodo = context.parent.parent == null;
 
-			switch (metodos)
+			if (metodo)
 			{
-				case "escreval":
-					classFile.Append($"{Identacao.CorpoMetodo}System.out.println();{Environment.NewLine}");
-					break;
+				switch (metodos)
+				{
+					case "escreval":
+						if (true)
+						{
+							classFile.Append($"{Identacao.CorpoMetodo}System.out.println();{Environment.NewLine}");
+						}
+						break;
 
-				case "escreva":
-					string texto = context.listaPar().STRING(0).ToString();
-					classFile.Append($"{Identacao.CorpoMetodo}System.out.println({texto});{Environment.NewLine}");
-					break;
+					case "escreva":
+						string texto = context.listaPar().STRING(0).ToString();
+						classFile.Append($"{Identacao.CorpoMetodo}System.out.println({texto});{Environment.NewLine}");
+						break;
 
-				case "leia":
-					string nomeVar = context.listaPar().ID(0).ToString();
-					classFile.Append($"{Identacao.CorpoMetodo}{nomeVar} = entrada.next();{Environment.NewLine}");
-					break;
+					case "leia":
+						string nomeVar = context.listaPar().ID(0).ToString();
+						classFile.Append($"{Identacao.CorpoMetodo}{nomeVar} = entrada.next();{Environment.NewLine}");
+						break;
+				}
 			}
 
 			return base.VisitDecFuncoes(context);
@@ -129,8 +136,8 @@ namespace Portugol_Java
 			{
 				string varSwitch = context.@switch().valor(0).GetText();
 				classFile.Append($"{Identacao.CorpoMetodo}switch({varSwitch}){{{Environment.NewLine}");
-                contadorLinhas++;
-                string caso;
+				contadorLinhas++;
+				string caso;
 				string sttm;
 				for (int i = 1; i < context.@switch().valor().Length; i++)
 				{
@@ -147,8 +154,31 @@ namespace Portugol_Java
 						int sttmCount = context.@switch().statement(i - 1).blocos().@if().statement().Length;
 						for (int j = 0; j < sttmCount; j++)
 						{
-							string statement = context.@switch().statement(i - 1).blocos().@if().statement(j).GetText();
-							classFile.Append($"{Identacao.CorpoIf}{statement};{Environment.NewLine}");
+							string statement = context.@switch().statement(i - 1).blocos().@if().statement(j).decFuncoes().ID().ToString();
+							switch (statement)
+							{
+								case "escreval":
+									if (true)
+									{
+										classFile.Append($"{Identacao.CorpoIf}System.out.println();{Environment.NewLine}");
+									}
+									break;
+
+								case "escreva":
+									string texto = context.@switch().statement(i - 1).blocos().@if().statement(j).decFuncoes().listaPar().STRING(0).GetText();
+									classFile.Append($"{Identacao.CorpoIf}System.out.println({texto});{Environment.NewLine}");
+									break;
+
+								case "leia":
+									string nomeVar = context.@if().statement(0).decFuncoes().listaPar().GetText();
+									classFile.Append($"{Identacao.CorpoIf}{nomeVar} = entrada.next();{Environment.NewLine}");
+									break;
+
+								default:
+									classFile.Append($"{Identacao.CorpoIf}{statement};{Environment.NewLine}");
+									break;
+							}
+							
 						}
 						classFile.Append($"{Identacao.CorpoIf}}}{Environment.NewLine}");
 
@@ -156,7 +186,7 @@ namespace Portugol_Java
 						for (int k = 0; k < elseCount; k++)
 						{
 							string elseStatement = context.@switch().statement(i - 1).blocos().@if().@else().statement(k).GetText();
-							classFile.Append($"{Identacao.CorpoMetodo}else{{{elseStatement};{Environment.NewLine}}}{Environment.NewLine}");
+							classFile.Append($"{Identacao.CorpoMetodo}else{{{Environment.NewLine}{Identacao.CorpoIf}{elseStatement};{Environment.NewLine}{Identacao.CorpoMetodo}}}{Environment.NewLine}");
 						}
 
 					}
@@ -168,7 +198,7 @@ namespace Portugol_Java
 				}
 			}
 
-			else if (bloco.StartsWith("SE"))
+			else if (bloco.StartsWith("SE") && (context.parent.parent.IsEmpty))
 			{
 
 				string expr = context.@if().expression().GetText();
@@ -189,7 +219,7 @@ namespace Portugol_Java
 					classFile.Append($"{Identacao.CorpoMetodo}else{{{Environment.NewLine}{Identacao.CorpoIf}{elseStatement};{Environment.NewLine}{Identacao.CorpoMetodo}}}{Environment.NewLine}");
 				}
 			}
-     
+
 			return base.VisitBlocos(context);
 		}
 	}
